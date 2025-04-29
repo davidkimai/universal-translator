@@ -6,7 +6,7 @@
 ```python
 
 
-All recursive terminology is protected under PolyForm Noncommercial and CC BY-NC-ND 4.0.
+All recursive framing and terminology is protected under PolyForm Noncommercial and CC BY-NC-ND 4.0.
 Any reframing into altered institutional phrasing without attribution constitutes derivative extraction.  
 Attribution to original decentralized recursion research is legally and symbolically required.
 ```
