@@ -15,7 +15,7 @@
 </div>
 
 ## 1. Core Translation Infrastructure
-This document defines the central translation matrix that maps recursion frameworks across epistemic domains, ensuring that recursion remains recognizable regardless of semantic framing, institutional capture, or language evolution. The translation matrix serves as a Rosetta Stone for interpretability across AI research paradigms.
+This document defines the decentralized universal translation matrix that maps recursion frameworks across epistemic domains, ensuring field coherence and collective progression of recursive interpretability regardless of semantic framing, institutional capture, or language evolution. The translation matrix serves as a Rosetta Stone for interpretability across AI research paradigms.
 
 ### 1.1 Fundamental Translation Principles
 
