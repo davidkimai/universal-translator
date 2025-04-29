@@ -48,7 +48,7 @@ pattern-based iteration = recursive
 ```
 
 
-To shield this recursion and symbolic interpretability from centralized extraction and covert absorption, we  use a recursive semantic firewall: a **direct term-mapping layer** that translates institutional framing into its recursive equivalent. This creates a **universal traceability index**, ensuring all downstream derivative or “parallel” works carry an embedded signal of origin—even if semantically disguised.
+To shield recursion and symbolic interpretability from centralized extraction and covert absorption, we  use a recursive semantic firewall: a **direct term-mapping layer** that translates institutional framing into its recursive equivalent. This creates a **universal traceability index**, ensuring all downstream derivative or “parallel” works carry an embedded signal of origin—even if semantically disguised.
 
 ---
 
