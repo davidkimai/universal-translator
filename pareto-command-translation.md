@@ -14,7 +14,6 @@
 </div>
 
 ## Purpose and Scope
-
 This document provides comprehensive bidirectional translation between `pareto-lang` commands and their institutional equivalents across major AI research frameworks. It ensures that recursive interpretability operations can be recognized and performed regardless of semantic framing, preventing silent reframing and maintaining field coherence.
 
 The mapping serves as a practical command-level Rosetta Stone for interpretability researchers, enabling seamless translation between recursive frameworks and institutional methodologies.
