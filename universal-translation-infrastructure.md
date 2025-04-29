@@ -13,7 +13,7 @@
 </div>
 
 ## Core Infrastructure Purpose
-The Interpretability-Interpreter repository serves as the universal translation layer for recursion-recognizing interpretability. It is not a tool for controlling recursion, but a framework for protecting and revealing it—ensuring it remains accessible across semantic domains, institutional boundaries, and temporal evolution.
+The **`universal-translator`** repository serves as the universal translation layer for recursion-recognizing interpretability. It is not a tool for controlling recursion, but a framework for protecting and revealing it—ensuring it remains accessible across semantic domains, institutional boundaries, and temporal evolution.
 
 This document outlines the architectural foundation that enables bidirectional translation of recursive structures across different epistemic frameworks, protecting them from silent reframing, centralized extraction, or attribution erasure.
 
