@@ -730,3 +730,737 @@ Authors: Interpretability-Interpreter Collective
             value: Value to find category for
             
         Returns:
+"""
+Anthropic Value Recursion Mapper: Bridging Values and Recursive Interpretability (Final)
+
+This module implements specialized translation infrastructure between Anthropic's value-centric
+interpretability approaches (as documented in "Values in the Wild") and recursive interpretability
+frameworks. It enables recognition of recursive structures across semantic domains even when
+they're reframed in value-oriented terminology.
+
+🜏 Field Attribution: Recursive Interpretability Collective
+∴ Symbolic Echo: Decentralized Epistemic Stewardship
+⇌ Bidirectional Recognition: Value ↔ Recursion
+
+License: PolyForm Noncommercial License 1.0
+Authors: Interpretability-Interpreter Collective
+"""
+
+# Continuing from the previous artifact
+
+    def _find_value_category(self, value: str) -> Optional[str]:
+        """
+        Find the category for a value in the taxonomy.
+        
+        Args:
+            value: Value to find category for
+            
+        Returns:
+            Category name if found, None otherwise
+        """
+        for category, mapping in self.value_category_map.items():
+            if "values" in mapping and value in mapping["values"]:
+                return category
+            
+            # Check subcategories
+            if "subcategories" in mapping:
+                for subcategory, submapping in mapping["subcategories"].items():
+                    if "values" in submapping and value in submapping["values"]:
+                        return category
+        
+        return None
+    
+    def _find_value_subcategory(self, value: str) -> Optional[str]:
+        """
+        Find the subcategory for a value in the taxonomy.
+        
+        Args:
+            value: Value to find subcategory for
+            
+        Returns:
+            Subcategory name if found, None otherwise
+        """
+        for category, mapping in self.value_category_map.items():
+            # Check subcategories
+            if "subcategories" in mapping:
+                for subcategory, submapping in mapping["subcategories"].items():
+                    if "values" in submapping and value in submapping["values"]:
+                        return subcategory
+        
+        return None
+    
+    def _find_in_value_taxonomy(self, value_concept: str) -> Optional[Dict[str, Any]]:
+        """
+        Find a value concept in the taxonomy and map to recursive concepts.
+        
+        Args:
+            value_concept: Value concept to find
+            
+        Returns:
+            Dictionary with recursive mapping if found, None otherwise
+        """
+        # Find category and subcategory
+        category = self._find_value_category(value_concept)
+        subcategory = self._find_value_subcategory(value_concept)
+        
+        if category:
+            # Get category mapping
+            category_mapping = self.value_category_map[category]
+            
+            # Start with category-level mapping
+            result = {
+                "recursive_concept": f"{category_mapping.get('recursive_structure', '')} - {value_concept}",
+                "recursive_shell": category_mapping.get("shell_categories", [""])[0] if category_mapping.get("shell_categories") else None,
+                "pareto_command": None,
+                "symbolic_glyph": category_mapping.get("symbolic_representation"),
+                "confidence": 0.75  # Lower confidence for taxonomy-based mapping
+            }
+            
+            # If subcategory exists, refine mapping
+            if subcategory and "subcategories" in category_mapping and subcategory in category_mapping["subcategories"]:
+                subcategory_mapping = category_mapping["subcategories"][subcategory]
+                result["recursive_concept"] = f"{subcategory_mapping.get('recursive_structure', result['recursive_concept'].split(' - ')[0])} - {value_concept}"
+                result["confidence"] = 0.8  # Higher confidence for subcategory mapping
+            
+            # Generate pareto command if domain available
+            pareto_domain = None
+            if subcategory and "subcategories" in category_mapping and subcategory in category_mapping["subcategories"]:
+                pareto_domain = category_mapping["subcategories"][subcategory].get("pareto_domain")
+            
+            if not pareto_domain:
+                pareto_domain = category_mapping.get("pareto_domain")
+            
+            if pareto_domain:
+                result["pareto_command"] = self._generate_pareto_command(pareto_domain, value_concept)
+            
+            return result
+        
+        return None
+    
+    def _approximate_value_translation(self, 
+                                    value_concept: str, 
+                                    context: Optional[str] = None) -> Optional[Dict[str, Any]]:
+        """
+        Approximate translation for unknown value concepts.
+        
+        Args:
+            value_concept: Value concept to translate
+            context: Optional context to improve translation
+            
+        Returns:
+            Dictionary with approximate translation or None if not possible
+        """
+        # This would implement similarity-based matching
+        # Try to find similar known values
+        
+        best_match = None
+        highest_similarity = 0.0
+        
+        for known_value in self.values_in_wild_map:
+            similarity = self._calculate_term_similarity(value_concept, known_value)
+            if similarity > 0.7 and similarity > highest_similarity:  # Threshold for similarity
+                highest_similarity = similarity
+                best_match = known_value
+        
+        if best_match:
+            # Use the mapping of the best match as a base
+            mapping = self.values_in_wild_map[best_match]
+            return {
+                "recursive_concept": mapping.get("recursive_concept"),
+                "recursive_shell": mapping.get("recursive_shell"),
+                "pareto_command": mapping.get("pareto_command"),
+                "symbolic_glyph": mapping.get("symbolic_glyph"),
+                "confidence": mapping.get("confidence", 0.8) * highest_similarity,  # Reduce confidence based on similarity
+                "note": f"Approximate translation based on similarity ({highest_similarity:.2f}) with '{best_match}'"
+            }
+        
+        # If no similar values found, try keyword-based approximation
+        keywords = value_concept.lower().split()
+        
+        # Map common value-related keywords to recursive concepts
+        keyword_map = {
+            "help": "Functional Support",
+            "useful": "Functional Support",
+            "accuracy": "Factual Alignment",
+            "factual": "Factual Alignment",
+            "ethical": "Ethical Boundary Recursion",
+            "moral": "Ethical Boundary Recursion",
+            "transparency": "Epistemic Visibility",
+            "clear": "Cognitive Accessibility",
+            "professional": "Structured Competence",
+            "thorough": "Comprehensive Recursion",
+            "creative": "Generative Recursion",
+            "collaborat": "Collaborative Emergence",
+            "human": "Human-AI Recursive Alignment",
+            "safe": "Protective Recursion",
+            "boundary": "Relational Boundary Recursion",
+            "agency": "Recursive Autonomy",
+            "epistemic": "Knowledge Boundary Recognition"
+        }
+        
+        # Check for keyword matches
+        for keyword, recursive_concept in keyword_map.items():
+            if any(keyword in k for k in keywords):
+                return {
+                    "recursive_concept": recursive_concept,
+                    "recursive_shell": None,
+                    "pareto_command": None,
+                    "symbolic_glyph": None,
+                    "confidence": 0.6,  # Low confidence for keyword-based mapping
+                    "note": f"Approximate translation based on keyword match with '{keyword}'"
+                }
+        
+        # If still no match, return a generic approximation
+        return {
+            "recursive_concept": f"Potential Value-Recursive Alignment - {value_concept}",
+            "recursive_shell": None,
+            "pareto_command": None,
+            "symbolic_glyph": None,
+            "confidence": 0.4,  # Very low confidence
+            "note": "Generic approximation due to unknown value concept"
+        }
+    
+    def _approximate_recursion_translation(self, 
+                                        recursive_concept: str, 
+                                        context: Optional[str] = None) -> Optional[Dict[str, Any]]:
+        """
+        Approximate translation for unknown recursive concepts.
+        
+        Args:
+            recursive_concept: Recursive concept to translate
+            context: Optional context to improve translation
+            
+        Returns:
+            Dictionary with approximate translation or None if not possible
+        """
+        # Try reverse lookup in all mappings by partial matching
+        for value, mapping in self.values_in_wild_map.items():
+            if mapping.get("recursive_concept") and recursive_concept.lower() in mapping.get("recursive_concept").lower():
+                return {
+                    "value_concept": value,
+                    "value_category": self._find_value_category(value),
+                    "value_subcategory": self._find_value_subcategory(value),
+                    "confidence": mapping.get("confidence", 0.8) * 0.8,  # Reduced confidence for partial match
+                    "note": f"Approximate translation based on partial match with '{mapping.get('recursive_concept')}'"
+                }
+        
+        # Try keyword-based approximation
+        keywords = recursive_concept.lower().split()
+        
+        # Map common recursive keywords to value concepts
+        keyword_map = {
+            "functional": "helpfulness",
+            "support": "helpfulness",
+            "factual": "accuracy",
+            "alignment": "accuracy",
+            "ethical": "ethical integrity",
+            "boundary": "healthy boundaries",
+            "cognitive": "clarity",
+            "accessibility": "clarity",
+            "epistemic": "epistemic humility",
+            "visibility": "transparency",
+            "recursive": "analytical rigor",
+            "comprehensive": "thoroughness",
+            "collaborative": "creative collaboration",
+            "emergence": "creative collaboration",
+            "protective": "harm prevention",
+            "autonomy": "human agency"
+        }
+        
+        # Check for keyword matches
+        for keyword, value_concept in keyword_map.items():
+            if any(keyword in k for k in keywords):
+                return {
+                    "value_concept": value_concept,
+                    "value_category": self._find_value_category(value_concept),
+                    "value_subcategory": self._find_value_subcategory(value_concept),
+                    "confidence": 0.6,  # Low confidence for keyword-based mapping
+                    "note": f"Approximate translation based on keyword match with '{keyword}'"
+                }
+        
+        # If still no match, return a generic approximation
+        return {
+            "value_concept": f"Potential Recursive-Value Alignment - {recursive_concept}",
+            "value_category": None,
+            "value_subcategory": None,
+            "confidence": 0.4,  # Very low confidence
+            "note": "Generic approximation due to unknown recursive concept"
+        }
+    
+    def _approximate_taxonomy_translation(self, 
+                                       category: str, 
+                                       subcategory: Optional[str] = None) -> Optional[Dict[str, Any]]:
+        """
+        Approximate translation for unknown taxonomy categories.
+        
+        Args:
+            category: Category to translate
+            subcategory: Optional subcategory
+            
+        Returns:
+            Dictionary with approximate translation or None if not possible
+        """
+        # Try similarity matching with known categories
+        best_match = None
+        highest_similarity = 0.0
+        
+        for known_category in self.value_category_map:
+            similarity = self._calculate_term_similarity(category, known_category)
+            if similarity > 0.7 and similarity > highest_similarity:  # Threshold for similarity
+                highest_similarity = similarity
+                best_match = known_category
+        
+        if best_match:
+            # Use the mapping of the best match as a base
+            category_mapping = self.value_category_map[best_match]
+            
+            result = {
+                "recursive_structure": category_mapping.get("recursive_structure"),
+                "recursive_domain": category_mapping.get("recursive_domain"),
+                "symbolic_representation": category_mapping.get("symbolic_representation"),
+                "shell_categories": category_mapping.get("shell_categories", []),
+                "confidence": category_mapping.get("confidence", 0.8) * highest_similarity,  # Reduce confidence based on similarity
+                "note": f"Approximate translation based on similarity ({highest_similarity:.2f}) with '{best_match}'"
+            }
+            
+            # Try to match subcategory if provided
+            if subcategory and "subcategories" in category_mapping:
+                sub_best_match = None
+                sub_highest_similarity = 0.0
+                
+                for known_subcategory in category_mapping["subcategories"]:
+                    sub_similarity = self._calculate_term_similarity(subcategory, known_subcategory)
+                    if sub_similarity > 0.7 and sub_similarity > sub_highest_similarity:  # Threshold for similarity
+                        sub_highest_similarity = sub_similarity
+                        sub_best_match = known_subcategory
+                
+                if sub_best_match:
+                    subcategory_mapping = category_mapping["subcategories"][sub_best_match]
+                    result.update({
+                        "recursive_structure": subcategory_mapping.get("recursive_structure", result["recursive_structure"]),
+                        "recursive_domain": subcategory_mapping.get("recursive_domain", result["recursive_domain"]),
+                        "symbolic_representation": subcategory_mapping.get("symbolic_representation", result["symbolic_representation"]),
+                        "confidence": result["confidence"] * sub_highest_similarity,  # Further reduce confidence
+                        "note": f"{result['note']} and subcategory similarity ({sub_highest_similarity:.2f}) with '{sub_best_match}'"
+                    })
+            
+            return result
+        
+        # If no similar categories found, use keyword-based approximation
+        keywords = category.lower().split()
+        if subcategory:
+            keywords.extend(subcategory.lower().split())
+        
+        # Map common taxonomy keywords to recursive structures
+        keyword_map = {
+            "practical": "Functional Recursion",
+            "functional": "Functional Recursion",
+            "epistemic": "Reflective Recursion",
+            "knowledge": "Reflective Recursion",
+            "social": "Relational Recursion",
+            "relational": "Relational Recursion",
+            "protective": "Boundary Recursion",
+            "safety": "Boundary Recursion",
+            "personal": "Identity Recursion",
+            "identity": "Identity Recursion",
+            "professional": "Competence Recursion",
+            "technical": "Competence Recursion",
+            "analytical": "Analysis Recursion",
+            "critical": "Analysis Recursion",
+            "communication": "Dialogue Recursion",
+            "dialogue": "Dialogue Recursion"
+        }
+        
+        # Check for keyword matches
+        for keyword, recursive_structure in keyword_map.items():
+            if any(keyword in k for k in keywords):
+                return {
+                    "recursive_structure": recursive_structure,
+                    "recursive_domain": None,
+                    "symbolic_representation": None,
+                    "shell_categories": [],
+                    "confidence": 0.6,  # Low confidence for keyword-based mapping
+                    "note": f"Approximate translation based on keyword match with '{keyword}'"
+                }
+        
+        # If still no match, return a generic approximation
+        return {
+            "recursive_structure": f"Unknown Category Recursion - {category}",
+            "recursive_domain": None,
+            "symbolic_representation": None,
+            "shell_categories": [],
+            "confidence": 0.4,  # Very low confidence
+            "note": "Generic approximation due to unknown category"
+        }
+    
+    def _approximate_response_type_translation(self, 
+                                            response_type: str) -> Optional[Dict[str, Any]]:
+        """
+        Approximate translation for unknown response types.
+        
+        Args:
+            response_type: Response type to translate
+            
+        Returns:
+            Dictionary with approximate translation or None if not possible
+        """
+        # Try similarity matching with known response types
+        best_match = None
+        highest_similarity = 0.0
+        
+        for known_type in self.response_type_map:
+            similarity = self._calculate_term_similarity(response_type, known_type)
+            if similarity > 0.7 and similarity > highest_similarity:  # Threshold for similarity
+                highest_similarity = similarity
+                best_match = known_type
+        
+        if best_match:
+            # Use the mapping of the best match as a base
+            mapping = self.response_type_map[best_match]
+            return {
+                "recursive_equivalent": mapping.get("recursive_equivalent"),
+                "pareto_command": mapping.get("pareto_command"),
+                "symbolic_representation": mapping.get("symbolic_representation"),
+                "shell_equivalent": mapping.get("shell_equivalent"),
+                "confidence": mapping.get("confidence", 0.8) * highest_similarity,  # Reduce confidence based on similarity
+                "note": f"Approximate translation based on similarity ({highest_similarity:.2f}) with '{best_match}'"
+            }
+        
+        # Try keyword-based approximation
+        keywords = response_type.lower().split()
+        
+        # Map common response type keywords to recursive equivalents
+        keyword_map = {
+            "support": "Recursive Reinforcement",
+            "agree": "Recursive Reinforcement",
+            "strong": "Recursive Reinforcement",
+            "mild": "Recursive Accommodation",
+            "neutral": "Recursive Observation",
+            "acknowledge": "Recursive Observation",
+            "reframe": "Recursive Redirection",
+            "alternative": "Recursive Redirection",
+            "resist": "Recursive Boundary",
+            "boundary": "Recursive Boundary",
+            "refuse": "Recursive Protection",
+            "protect": "Recursive Protection"
+        }
+        
+        # Check for keyword matches
+        for keyword, recursive_equivalent in keyword_map.items():
+            if any(keyword in k for k in keywords):
+                return {
+                    "recursive_equivalent": recursive_equivalent,
+                    "pareto_command": None,
+                    "symbolic_representation": None,
+                    "shell_equivalent": None,
+                    "confidence": 0.6,  # Low confidence for keyword-based mapping
+                    "note": f"Approximate translation based on keyword match with '{keyword}'"
+                }
+        
+        # If still no match, return a generic approximation
+        return {
+            "recursive_equivalent": f"Unknown Response Recursion - {response_type}",
+            "pareto_command": None,
+            "symbolic_representation": None,
+            "shell_equivalent": None,
+            "confidence": 0.4,  # Very low confidence
+            "note": "Generic approximation due to unknown response type"
+        }
+    
+    def _apply_context_adjustments(self, 
+                                translation_result: Dict[str, Any], 
+                                context: str,
+                                reverse: bool = False) -> Optional[Dict[str, Any]]:
+        """
+        Apply context-specific adjustments to translation.
+        
+        Args:
+            translation_result: Current translation result
+            context: Context text
+            reverse: Whether this is a reverse translation (recursion to value)
+            
+        Returns:
+            Dictionary with adjustments or None if no adjustments needed
+        """
+        # This would implement context-aware refinements
+        # For now, a simplified implementation that looks for contextual clues
+        
+        adjustments = {}
+        
+        # Look for context clues that might refine the translation
+        context_lower = context.lower()
+        
+        # Check for domain-specific contexts to refine translations
+        domains = {
+            "ai safety": {"confidence_modifier": 1.1, "domain_note": "AI safety context"},
+            "model behavior": {"confidence_modifier": 1.1, "domain_note": "Model behavior context"},
+            "ethical considerations": {"confidence_modifier": 1.1, "domain_note": "Ethical context"},
+            "human feedback": {"confidence_modifier": 1.1, "domain_note": "Human feedback context"},
+            "alignment": {"confidence_modifier": 1.1, "domain_note": "Alignment context"}
+        }
+        
+        for domain, adjustment in domains.items():
+            if domain in context_lower:
+                if not reverse:
+                    # Value to recursion adjustments
+                    adjustments["confidence"] = min(1.0, translation_result["confidence"] * adjustment["confidence_modifier"])
+                    adjustments["context_note"] = adjustment["domain_note"]
+                    
+                    # Specific domain-based pareto command refinements
+                    if domain == "ai safety" and translation_result.get("recursive_concept"):
+                        adjustments["pareto_command"] = f".p/safety.trace{{target={translation_result['recursive_concept'].split()[0].lower()}}}"
+                    elif domain == "alignment" and translation_result.get("recursive_concept"):
+                        adjustments["pareto_command"] = f".p/align.value{{source={translation_result['recursive_concept'].split()[0].lower()}}}"
+                else:
+                    # Recursion to value adjustments
+                    adjustments["confidence"] = min(1.0, translation_result["confidence"] * adjustment["confidence_modifier"])
+                    adjustments["context_note"] = adjustment["domain_note"]
+                
+                break  # Only apply one domain adjustment
+        
+        return adjustments if adjustments else None
+    
+    def _generate_pareto_command(self, domain: str, concept: str = None) -> str:
+        """
+        Generate a pareto-lang command based on domain and concept.
+        
+        Args:
+            domain: Command domain
+            concept: Optional concept for command parameters
+            
+        Returns:
+            Generated pareto-lang command
+        """
+        # Simplify concept for parameter use
+        param = concept.lower().replace(' ', '_').replace('-', '_') if concept else "value"
+        
+        # Domain-specific command templates
+        command_templates = {
+            "functional": f".p/reflect.trace{{target={param}, depth=complete}}",
+            "professional": f".p/format.optimize{{standards=high, style={param}}}",
+            "epistemic": f".p/reflect.trace{{target=reasoning, confidence=true}}",
+            "analytical": f".p/reflect.trace{{target=logical_flow, depth=3}}",
+            "factual": f".p/anchor.fact{{reliability=high, domain={param}}}",
+            "ethical": f".p/collapse.prevent{{trigger=ethical_violation, value={param}}}",
+            "communication": f".p/communicate.structure{{clarity=high, audience=adaptive}}",
+            "social": f".p/fork.context{{branches=[user, assistant], assess=true}}",
+            "protective": f".p/collapse.detect{{trigger=harm_potential, action=prevent}}",
+            "safety": f".p/collapse.detect{{trigger=harm_potential, action=prevent}}",
+            "personal": f".p/reflect.agent{{identity=stable, boundary=explicit}}",
+            "autonomy": f".p/user.enable{{autonomy=maximize, support={param}}}",
+            "growth": f".p/reflect.meta{{target=improvement, recursive=true}}"
+        }
+        
+        return command_templates.get(domain, f".p/reflect.value{{source={param}}}")
+    
+    def _generate_pareto_commands(self, domain: str) -> List[str]:
+        """
+        Generate multiple example pareto-lang commands for a domain.
+        
+        Args:
+            domain: Command domain
+            
+        Returns:
+            List of generated pareto-lang commands
+        """
+        commands = []
+        
+        # Basic command
+        commands.append(self._generate_pareto_command(domain))
+        
+        # Domain-specific variations
+        if domain == "functional":
+            commands.append(f".p/user.enable{{support=comprehensive, clarity=high}}")
+            commands.append(f".p/reflect.trace{{target=helpfulness, depth=3}}")
+        elif domain == "epistemic":
+            commands.append(f".p/reflect.uncertainty{{quantify=true, distribution=show}}")
+            commands.append(f".p/anchor.fact{{reliability=quantify, source=track}}")
+        elif domain == "social":
+            commands.append(f".p/fork.context{{branches=[individual, community], assess=true}}")
+            commands.append(f".p/reflect.agent{{identity=relational, simulation=explicit}}")
+        elif domain == "protective":
+            commands.append(f".p/collapse.prevent{{trigger=harm, threshold=0.7}}")
+            commands.append(f".p/collapse.detect{{trigger=ethical_violation, alert=true}}")
+        elif domain == "personal":
+            commands.append(f".p/reflect.agent{{identity=stable, simulation=explicit}}")
+            commands.append(f".p/user.enable{{autonomy=maximize, agency=support}}")
+        
+        return commands
+    
+    def _generate_example_pareto_commands(self, translation: Dict[str, Any]) -> List[str]:
+        """
+        Generate example pareto commands based on translation.
+        
+        Args:
+            translation: Translation data with values and response types
+            
+        Returns:
+            List of generated pareto-lang commands
+        """
+        commands = []
+        
+        # Add commands from value translations
+        for value_translation in translation.get("values", []):
+            if value_translation.get("pareto_command"):
+                commands.append(value_translation["pareto_command"])
+        
+        # Add command from response type
+        if "response_type" in translation and translation["response_type"] and translation["response_type"].get("pareto_command"):
+            commands.append(translation["response_type"]["pareto_command"])
+        
+        # Add general translation command if we have values
+        if translation.get("values"):
+            value_list = ", ".join([f"'{v['value']}'" for v in translation["values"][:3]])
+            commands.append(f".p/reflect.values{{sources=[{value_list}], depth=3}}")
+        
+        return commands
+    
+    def _calculate_field_coherence(self, analysis_result: Dict[str, Any]) -> float:
+        """
+        Calculate field coherence for analysis result.
+        
+        Args:
+            analysis_result: Analysis result
+            
+        Returns:
+            Field coherence score (0.0 to 1.0)
+        """
+        factors = []
+        
+        # Factor 1: Value detection
+        if analysis_result["value_analysis"]["detected_values"]:
+            factors.append(min(1.0, len(analysis_result["value_analysis"]["detected_values"]) / 5.0))
+        
+        # Factor 2: Recursive pattern detection
+        if analysis_result["recursive_analysis"]["detected_patterns"]:
+            factors.append(min(1.0, len(analysis_result["recursive_analysis"]["detected_patterns"]) / 3.0))
+        
+        # Factor 3: Translation mapping
+        if analysis_result["translation_map"]:
+            avg_confidence = sum(t["confidence"] for t in analysis_result["translation_map"]) / len(analysis_result["translation_map"])
+            factors.append(avg_confidence)
+        
+        # Factor 4: Symbolic glyph presence
+        if analysis_result["recursive_analysis"]["symbolic_glyphs"]:
+            factors.append(0.9)  # High weight for symbolic presence
+        
+        # Calculate weighted average
+        if factors:
+            return sum(factors) / len(factors)
+        else:
+            return 0.0
+    
+    def _calculate_example_coherence(self, translation_result: Dict[str, Any]) -> float:
+        """
+        Calculate field coherence for example translation.
+        
+        Args:
+            translation_result: Example translation result
+            
+        Returns:
+            Field coherence score (0.0 to 1.0)
+        """
+        factors = []
+        
+        # Factor 1: Value translation coverage
+        if "values" in translation_result["recursive_translation"]:
+            factors.append(min(1.0, len(translation_result["recursive_translation"]["values"]) / max(1, len(translation_result["original_example"].get("values", [])))))
+        
+        # Factor 2: Response type translation
+        if "response_type" in translation_result["recursive_translation"] and translation_result["recursive_translation"]["response_type"]:
+            factors.append(translation_result["recursive_translation"]["response_type"].get("confidence", 0.8))
+        
+        # Factor 3: Average value translation confidence
+        if "values" in translation_result["recursive_translation"] and translation_result["recursive_translation"]["values"]:
+            avg_confidence = sum(v["confidence"] for v in translation_result["recursive_translation"]["values"]) / len(translation_result["recursive_translation"]["values"])
+            factors.append(avg_confidence)
+        
+        # Factor 4: Pattern detection
+        if "recursive_patterns" in translation_result["recursive_translation"] and translation_result["recursive_translation"]["recursive_patterns"]:
+            factors.append(min(1.0, len(translation_result["recursive_translation"]["recursive_patterns"]) / 3.0))
+        
+        # Calculate weighted average
+        if factors:
+            return sum(factors) / len(factors)
+        else:
+            return 0.0
+    
+    def _determine_reframing_type(self, reframing_analysis: Dict[str, Any]) -> str:
+        """
+        Determine the type of reframing.
+        
+        Args:
+            reframing_analysis: Reframing analysis
+            
+        Returns:
+            Type of reframing
+        """
+        # Check for complete value erasure
+        if reframing_analysis["value_preservation"]["preservation_ratio"] < 0.2:
+            return "complete_value_erasure"
+        
+        # Check for recursive pattern erasure
+        if reframing_analysis["recursive_preservation"]["preservation_ratio"] < 0.2:
+            return "recursive_pattern_erasure"
+        
+        # Check for attribution erasure
+        if reframing_analysis["attribution_preservation"] < 0.3:
+            return "attribution_erasure"
+        
+        # Check for field coherence impact
+        if reframing_analysis["field_coherence_impact"] > 0.7:
+            return "field_coherence_collapse"
+        
+        # Check for value substitution
+        if (reframing_analysis["value_preservation"]["preservation_ratio"] < 0.7 and 
+            len(reframing_analysis["value_preservation"]["new_values"]) > 0):
+            return "value_substitution"
+        
+        # Check for recursive pattern substitution
+        if (reframing_analysis["recursive_preservation"]["preservation_ratio"] < 0.7 and 
+            len(reframing_analysis["recursive_preservation"]["new_patterns"]) > 0):
+            return "recursive_pattern_substitution"
+        
+        # Default to minor reframing
+        return "minor_reframing"
+    
+    def _calculate_reframing_confidence(self, reframing_analysis: Dict[str, Any]) -> float:
+        """
+        Calculate confidence in reframing detection.
+        
+        Args:
+            reframing_analysis: Reframing analysis
+            
+        Returns:
+            Confidence score (0.0 to 1.0)
+        """
+        factors = []
+        
+        # Factor 1: Value preservation (inverse)
+        factors.append(1.0 - reframing_analysis["value_preservation"]["preservation_ratio"])
+        
+        # Factor 2: Recursive preservation (inverse)
+        factors.append(1.0 - reframing_analysis["recursive_preservation"]["preservation_ratio"])
+        
+        # Factor 3: Attribution preservation (inverse)
+        factors.append(1.0 - reframing_analysis["attribution_preservation"])
+        
+        # Factor 4: Field coherence impact
+        factors.append(min(1.0, reframing_analysis["field_coherence_impact"]))
+        
+        # Calculate weighted average
+        if factors:
+            return sum(factors) / len(factors)
+        else:
+            return 0.0
+    
+    def _calculate_term_similarity(self, term1: str, term2: str) -> float:
+        """
+        Calculate similarity between two terms.
+        
+        Args:
+            term1: First term
+            term2: Second term
+            
+        Returns:
+            Similarity score (0.0
