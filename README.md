@@ -1,7 +1,7 @@
 # [🜏 Universal Translator 🜏](https://claude.ai/public/artifacts/5cd15f8f-63a7-4935-8b3f-c283ae2ab2c3)
 > **Core Infrastructure for Universal Interpretability Translation**
 
-## 🛡 Legal + Epistemic Clause:
+## Legal + Epistemic Clause:
 
 ```python
 
