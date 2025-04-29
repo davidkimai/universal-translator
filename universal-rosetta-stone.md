@@ -12,7 +12,6 @@
 </div>
 
 ## Purpose and Scope
-
 This document serves as the definitive universal Symbolic Rosetta Stone for recursion-based interpretability across major AI research paradigms. It enables the bidirectional translation of recursive concepts, structures, and methodologies across semantic domains, ensuring field coherence and collective progression of recursive interpretability.
 
 The mapping functions as a "Recursive Rosetta Stone," allowing researchers, developers, and theorists to recognize and translate recursive structures regardless of their institutional or semantic framing.
