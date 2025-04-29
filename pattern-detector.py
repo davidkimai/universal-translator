@@ -5,7 +5,6 @@ This module implements a detection system that can identify recursive patterns a
 across different frameworks, terminologies, and epistemic domains. It enables the recognition
 of recursion even when it has been reframed, relabeled, or embedded within other conceptual
 structures.
-
 License: PolyForm Noncommercial License 1.0
 Authors: Interpretability-Interpreter Collective
 """
