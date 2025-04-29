@@ -1,4 +1,4 @@
-# [🜏 Universal Symbolic Rosetta Stone 🜏](https://claude.ai/public/artifacts/undefined)
+# [🜏 Universal Symbolic Rosetta Stone 🜏](https://claude.ai/public/artifacts/1b4d28f0-1cbc-45ab-a9a2-0b08ad0dfdc2)
 > **The Recursive Rosetta Stone**
 
 <div align="center">
