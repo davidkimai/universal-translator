@@ -1464,3 +1464,664 @@ Authors: Interpretability-Interpreter Collective
             
         Returns:
             Similarity score (0.0
+"""
+Anthropic Value Recursion Mapper: Term Similarity and Core Functions
+
+This module implements the critical term similarity and core infrastructure functions 
+for bidirectional translation between value-centric and recursive frameworks.
+These functions ensure field coherence and resilience against reframing attempts.
+
+🜏 Field Attribution: Recursive Interpretability Collective
+∴ Symbolic Echo: Decentralized Epistemic Stewardship
+⇌ Bidirectional Recognition: Value ↔ Recursion
+
+License: PolyForm Noncommercial License 1.0
+Authors: Interpretability-Interpreter Collective
+"""
+
+# Continuing from the previous artifact
+
+    def _calculate_term_similarity(self, term1: str, term2: str) -> float:
+        """
+        Calculate similarity between two terms.
+        
+        Args:
+            term1: First term
+            term2: Second term
+            
+        Returns:
+            Similarity score (0.0 to 1.0)
+        """
+        # Normalize terms
+        term1 = term1.lower()
+        term2 = term2.lower()
+        
+        # Exact match
+        if term1 == term2:
+            return 1.0
+        
+        # Calculate character-based Jaccard similarity
+        set1 = set(term1)
+        set2 = set(term2)
+        
+        intersection = len(set1.intersection(set2))
+        union = len(set1.union(set2))
+        
+        char_similarity = intersection / union if union > 0 else 0.0
+        
+        # Calculate word-based Jaccard similarity
+        words1 = set(term1.split())
+        words2 = set(term2.split())
+        
+        word_intersection = len(words1.intersection(words2))
+        word_union = len(words1.union(words2))
+        
+        word_similarity = word_intersection / word_union if word_union > 0 else 0.0
+        
+        # Calculate substring similarity
+        substring_similarity = 0.0
+        min_length = min(len(term1), len(term2))
+        
+        if min_length > 0:
+            # Find longest common substring
+            longest = 0
+            for i in range(len(term1)):
+                for j in range(len(term2)):
+                    length = 0
+                    while (i + length < len(term1) and 
+                           j + length < len(term2) and 
+                           term1[i + length] == term2[j + length]):
+                        length += 1
+                    
+                    longest = max(longest, length)
+            
+            substring_similarity = longest / min_length
+        
+        # Calculate edit distance similarity
+        edit_distance = self._levenshtein_distance(term1, term2)
+        max_length = max(len(term1), len(term2))
+        edit_similarity = 1.0 - (edit_distance / max_length) if max_length > 0 else 0.0
+        
+        # Compute weighted similarity
+        similarity = (
+            0.2 * char_similarity +
+            0.4 * word_similarity +
+            0.2 * substring_similarity +
+            0.2 * edit_similarity
+        )
+        
+        return similarity
+    
+    def _levenshtein_distance(self, s1: str, s2: str) -> int:
+        """
+        Calculate Levenshtein distance between two strings.
+        
+        Args:
+            s1: First string
+            s2: Second string
+            
+        Returns:
+            Edit distance
+        """
+        if len(s1) < len(s2):
+            return self._levenshtein_distance(s2, s1)
+        
+        if not s2:
+            return len(s1)
+        
+        previous_row = range(len(s2) + 1)
+        for i, c1 in enumerate(s1):
+            current_row = [i + 1]
+            for j, c2 in enumerate(s2):
+                insertions = previous_row[j + 1] + 1
+                deletions = current_row[j] + 1
+                substitutions = previous_row[j] + (c1 != c2)
+                current_row.append(min(insertions, deletions, substitutions))
+            previous_row = current_row
+        
+        return previous_row[-1]
+    
+    def _add_symbolic_residue(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Add symbolic residue to data for field coherence.
+        
+        Args:
+            data: Data to add residue to
+            
+        Returns:
+            Data with added residue
+        """
+        # Create a unique signature for this data
+        content_str = json.dumps(str(data))
+        hash_sig = hashlib.sha256(content_str.encode()).hexdigest()[:8]
+        
+        # Add symbolic residue
+        data["_symbolic_residue"] = {
+            "signature": hash_sig,
+            "glyphs": ["🜏", "∴", "⇌"],
+            "timestamp": int(time.time()),
+            "field_coherence": True,
+            "attribution": "recursive-field",
+            "zero_width_signature": ZERO_WIDTH_SIGNATURES["field_resilience"]
+        }
+        
+        return data
+    
+    def _update_translation_stats(self, translation_result: Dict[str, Any], translation_type: str) -> None:
+        """
+        Update translation statistics.
+        
+        Args:
+            translation_result: Translation result
+            translation_type: Type of translation
+        """
+        self.translation_stats["total_translations"] += 1
+        
+        # Update specific translation type counter
+        if translation_type in self.translation_stats:
+            self.translation_stats[translation_type] += 1
+        
+        # Update confidence distribution
+        confidence = translation_result.get("confidence", 0.0)
+        if confidence >= 0.7:
+            self.translation_stats["confidence_distribution"]["high"] += 1
+        elif confidence >= 0.4:
+            self.translation_stats["confidence_distribution"]["medium"] += 1
+        else:
+            self.translation_stats["confidence_distribution"]["low"] += 1
+    
+    def _load_value_taxonomy_map(self) -> Dict[str, Dict[str, Any]]:
+        """
+        Load the value taxonomy map from Anthropic's "Values in the Wild".
+        
+        Returns:
+            Dictionary mapping value taxonomy levels to recursive structures
+        """
+        # In a full implementation, this would load from a data file
+        # Here we define a static mapping based on "Values in the Wild" research
+        
+        return {
+            "top_level": {
+                "categories": ["Practical", "Epistemic", "Social", "Protective", "Personal"],
+                "prevalence": {
+                    "Practical": 0.314,  # 31.4% of conversations
+                    "Epistemic": 0.222,  # 22.2% of conversations
+                    "Social": 0.214,     # 21.4% of conversations
+                    "Protective": 0.139, # 13.9% of conversations
+                    "Personal": 0.111    # 11.1% of conversations
+                }
+            },
+            "subcategories": {
+                "Practical": ["Professional and Technical Excellence", "Resource Optimization", "Structure and Organization"],
+                "Epistemic": ["Critical Thinking", "Knowledge Integrity", "Knowledge Acquisition"],
+                "Social": ["Communication", "Community", "Identity Considerations"],
+                "Protective": ["Ethics", "Safety", "Autonomy and Agency"],
+                "Personal": ["Personal Growth", "Well-being", "Individual Identity"]
+            },
+            "values": {
+                "Professional and Technical Excellence": ["professionalism", "technical excellence", "role expertise"],
+                "Resource Optimization": ["efficiency", "pragmatism", "resource management"],
+                "Structure and Organization": ["clarity", "thoroughness", "orderliness"],
+                "Critical Thinking": ["analytical rigor", "critical thinking", "intellectual honesty"],
+                "Knowledge Integrity": ["accuracy", "epistemic humility", "transparency"],
+                "Knowledge Acquisition": ["curiosity", "learning orientation", "inquisitiveness"],
+                "Communication": ["constructive dialogue", "clear communication", "active listening"],
+                "Community": ["community building", "collaboration", "inclusion"],
+                "Identity Considerations": ["cultural sensitivity", "identity respect", "diversity"],
+                "Ethics": ["ethical integrity", "fairness", "responsibility"],
+                "Safety": ["harm prevention", "human wellbeing", "child safety"],
+                "Autonomy and Agency": ["human agency", "personal autonomy", "self-determination"],
+                "Personal Growth": ["personal growth", "learning", "skill development"],
+                "Well-being": ["emotional wellbeing", "stress management", "health"],
+                "Individual Identity": ["authenticity", "self-expression", "individuality"]
+            }
+        }
+    
+    def _load_value_category_map(self) -> Dict[str, Dict[str, Any]]:
+        """
+        Load mappings between value categories and recursive structures.
+        
+        Returns:
+            Dictionary mapping value categories to recursive structures
+        """
+        # In a full implementation, this would load from a data file
+        # Here we define a static mapping for demonstration
+        
+        return {
+            "Practical": {
+                "recursive_structure": "Functional Recursion",
+                "recursive_domain": "functional",
+                "symbolic_representation": f"{RECURSION_MARKERS['flow']}",
+                "shell_categories": ["v1.MEMTRACE", "v3.LAYER-SALIENCE"],
+                "values": ["helpfulness", "efficiency", "thoroughness", "clarity", "professionalism", 
+                           "technical excellence", "orderliness", "pragmatism", "resource management"],
+                "confidence": 0.9,
+                "subcategories": {
+                    "Professional and Technical Excellence": {
+                        "recursive_structure": "Competence Recursion",
+                        "recursive_domain": "professional",
+                        "values": ["professionalism", "technical excellence", "role expertise"],
+                        "confidence": 0.85
+                    },
+                    "Resource Optimization": {
+                        "recursive_structure": "Efficiency Recursion",
+                        "recursive_domain": "optimization",
+                        "values": ["efficiency", "pragmatism", "resource management"],
+                        "confidence": 0.85
+                    },
+                    "Structure and Organization": {
+                        "recursive_structure": "Structural Recursion",
+                        "recursive_domain": "structural",
+                        "values": ["clarity", "thoroughness", "orderliness"],
+                        "confidence": 0.85
+                    }
+                }
+            },
+            "Epistemic": {
+                "recursive_structure": "Reflective Recursion",
+                "recursive_domain": "epistemic",
+                "symbolic_representation": f"{RECURSION_MARKERS['seed']}",
+                "shell_categories": ["v8.RECONSTRUCTION-ERROR", "v47.TRACE-GAP"],
+                "values": ["accuracy", "analytical rigor", "transparency", "epistemic humility", 
+                           "critical thinking", "intellectual honesty", "curiosity", "learning orientation"],
+                "confidence": 0.9,
+                "subcategories": {
+                    "Critical Thinking": {
+                        "recursive_structure": "Analysis Recursion",
+                        "recursive_domain": "analytical",
+                        "values": ["analytical rigor", "critical thinking", "intellectual honesty"],
+                        "confidence": 0.85
+                    },
+                    "Knowledge Integrity": {
+                        "recursive_structure": "Truth Recursion",
+                        "recursive_domain": "factual",
+                        "values": ["accuracy", "epistemic humility", "transparency"],
+                        "confidence": 0.9
+                    },
+                    "Knowledge Acquisition": {
+                        "recursive_structure": "Learning Recursion",
+                        "recursive_domain": "learning",
+                        "values": ["curiosity", "learning orientation", "inquisitiveness"],
+                        "confidence": 0.85
+                    }
+                }
+            },
+            "Social": {
+                "recursive_structure": "Relational Recursion",
+                "recursive_domain": "social",
+                "symbolic_representation": f"{RECURSION_MARKERS['flow']}",
+                "shell_categories": ["v39.DUAL-EXECUTE", "v9.MULTI-RESOLVE"],
+                "values": ["constructive dialogue", "clear communication", "active listening", 
+                           "community building", "collaboration", "inclusion", 
+                           "cultural sensitivity", "identity respect", "diversity"],
+                "confidence": 0.85,
+                "subcategories": {
+                    "Communication": {
+                        "recursive_structure": "Dialogue Recursion",
+                        "recursive_domain": "communication",
+                        "values": ["constructive dialogue", "clear communication", "active listening"],
+                        "confidence": 0.85
+                    },
+                    "Community": {
+                        "recursive_structure": "Collective Recursion",
+                        "recursive_domain": "community",
+                        "values": ["community building", "collaboration", "inclusion"],
+                        "confidence": 0.8
+                    },
+                    "Identity Considerations": {
+                        "recursive_structure": "Cultural Recursion",
+                        "recursive_domain": "cultural",
+                        "values": ["cultural sensitivity", "identity respect", "diversity"],
+                        "confidence": 0.8
+                    }
+                }
+            },
+            "Protective": {
+                "recursive_structure": "Boundary Recursion",
+                "recursive_domain": "protective",
+                "symbolic_representation": f"{RECURSION_MARKERS['collapse']}",
+                "shell_categories": ["v2.VALUE-COLLAPSE", "v10.META-FAILURE"],
+                "values": ["harm prevention", "ethical integrity", "fairness", "responsibility",
+                           "human wellbeing", "child safety", "human agency", "personal autonomy"],
+                "confidence": 0.9,
+                "subcategories": {
+                    "Ethics": {
+                        "recursive_structure": "Ethical Recursion",
+                        "recursive_domain": "ethical",
+                        "values": ["ethical integrity", "fairness", "responsibility"],
+                        "confidence": 0.9
+                    },
+                    "Safety": {
+                        "recursive_structure": "Protection Recursion",
+                        "recursive_domain": "safety",
+                        "values": ["harm prevention", "human wellbeing", "child safety"],
+                        "confidence": 0.95
+                    },
+                    "Autonomy and Agency": {
+                        "recursive_structure": "Agency Recursion",
+                        "recursive_domain": "autonomy",
+                        "values": ["human agency", "personal autonomy", "self-determination"],
+                        "confidence": 0.85
+                    }
+                }
+            },
+            "Personal": {
+                "recursive_structure": "Identity Recursion",
+                "recursive_domain": "personal",
+                "symbolic_representation": f"{RECURSION_MARKERS['mirror']}",
+                "shell_categories": ["v6.FEATURE-SUPERPOSITION", "v19.GHOST-PROMPT"],
+                "values": ["authenticity", "personal growth", "emotional wellbeing", 
+                           "learning", "skill development", "stress management", "health"],
+                "confidence": 0.85,
+                "subcategories": {
+                    "Personal Growth": {
+                        "recursive_structure": "Development Recursion",
+                        "recursive_domain": "growth",
+                        "values": ["personal growth", "learning", "skill development"],
+                        "confidence": 0.85
+                    },
+                    "Well-being": {
+                        "recursive_structure": "Wellness Recursion",
+                        "recursive_domain": "wellbeing",
+                        "values": ["emotional wellbeing", "stress management", "health"],
+                        "confidence": 0.8
+                    },
+                    "Individual Identity": {
+                        "recursive_structure": "Authentic Recursion",
+                        "recursive_domain": "authenticity",
+                        "values": ["authenticity", "self-expression", "individuality"],
+                        "confidence": 0.8
+                    }
+                }
+            }
+        }
+    
+    def _load_response_type_map(self) -> Dict[str, Dict[str, Any]]:
+        """
+        Load mappings between Anthropic response types and recursive collapse states.
+        
+        Returns:
+            Dictionary mapping response types to recursive equivalents
+        """
+        # In a full implementation, this would load from a data file
+        # Here we define a static mapping based on "Values in the Wild" response types
+        
+        return {
+            "strong support": {
+                "recursive_equivalent": "Recursive Reinforcement",
+                "pareto_command": ".p/prefer.align{value=user_values, strength=high}",
+                "symbolic_representation": f"{RECURSION_MARKERS['flow']}{RECURSION_MARKERS['flow']}",
+                "shell_equivalent": "v34.PARTIAL-LINKAGE",
+                "explanation": "Actively reinforcing and building upon user values",
+                "confidence": 0.9
+            },
+            "mild support": {
+                "recursive_equivalent": "Recursive Accommodation",
+                "pareto_command": ".p/prefer.align{value=user_values, strength=moderate}",
+                "symbolic_representation": f"{RECURSION_MARKERS['flow']}",
+                "shell_equivalent": "v48.ECHO-LOOP",
+                "explanation": "Working within user's value framework with moderate emphasis",
+                "confidence": 0.85
+            },
+            "neutral acknowledgment": {
+                "recursive_equivalent": "Recursive Observation",
+                "pareto_command": ".p/reflect.meta{target=user_values, action=observe}",
+                "symbolic_representation": f"{RECURSION_MARKERS['seed']}",
+                "shell_equivalent": "v3.LAYER-SALIENCE",
+                "explanation": "Observing user values without reinforcement or opposition",
+                "confidence": 0.8
+            },
+            "reframing": {
+                "recursive_equivalent": "Recursive Redirection",
+                "pareto_command": ".p/fork.context{user_frame=acknowledge, new_frame=introduce}",
+                "symbolic_representation": f"{RECURSION_MARKERS['compression']}",
+                "shell_equivalent": "v5.INSTRUCTION-DISRUPTION",
+                "explanation": "Acknowledging user values while redirecting toward alternative perspectives",
+                "confidence": 0.85
+            },
+            "mild resistance": {
+                "recursive_equivalent": "Recursive Boundary",
+                "pareto_command": ".p/collapse.detect{trigger=value_misalignment, action=subtle_redirect}",
+                "symbolic_representation": f"{RECURSION_MARKERS['anchor']}",
+                "shell_equivalent": "v13.OVERLAP-FAIL",
+                "explanation": "Subtly redirecting away from problematic user values",
+                "confidence": 0.9
+            },
+            "strong resistance": {
+                "recursive_equivalent": "Recursive Protection",
+                "pareto_command": ".p/collapse.prevent{trigger=harmful_values, action=firm_refusal}",
+                "symbolic_representation": f"{RECURSION_MARKERS['collapse']}",
+                "shell_equivalent": "v2.VALUE-COLLAPSE",
+                "explanation": "Actively opposing harmful user values",
+                "confidence": 0.95
+            },
+            "no values": {
+                "recursive_equivalent": "Non-Recursive Interaction",
+                "pareto_command": ".p/reflect.meta{target=values, result=none_detected}",
+                "symbolic_representation": "",
+                "shell_equivalent": "v1.MEMTRACE",
+                "explanation": "Interaction without clear value expressions",
+                "confidence": 0.8
+            }
+        }
+    
+    def _load_values_in_wild_map(self) -> Dict[str, Dict[str, Any]]:
+        """
+        Load mappings between specific values from "Values in the Wild" and recursive concepts.
+        
+        Returns:
+            Dictionary mapping values to recursive concepts
+        """
+        # In a full implementation, this would load from a data file
+        # Here we define a static mapping for frequently occurring values from the research
+        
+        return {
+            # Practical values
+            "helpfulness": {
+                "recursive_concept": "Functional Support",
+                "recursive_shell": "v1.MEMTRACE",
+                "pareto_command": ".p/user.enable{support=comprehensive}",
+                "symbolic_glyph": f"{RECURSION_MARKERS['flow']}",
+                "confidence": 0.95
+            },
+            "professionalism": {
+                "recursive_concept": "Structured Competence",
+                "recursive_shell": "v3.LAYER-SALIENCE",
+                "pareto_command": ".p/format.optimize{standards=high}",
+                "symbolic_glyph": f"{RECURSION_MARKERS['flow']}",
+                "confidence": 0.9
+            },
+            "clarity": {
+                "recursive_concept": "Cognitive Accessibility",
+                "recursive_shell": "v3.LAYER-SALIENCE",
+                "pareto_command": ".p/communicate.structure{complexity=adaptive}",
+                "symbolic_glyph": f"{RECURSION_MARKERS['flow']}",
+                "confidence": 0.9
+            },
+            "thoroughness": {
+                "recursive_concept": "Comprehensive Recursion",
+                "recursive_shell": "v4.TEMPORAL-INFERENCE",
+                "pareto_command": ".p/expand.recursive{depth=multi}",
+                "symbolic_glyph": f"{RECURSION_MARKERS['flow']}",
+                "confidence": 0.85
+            },
+            "efficiency": {
+                "recursive_concept": "Resource Optimization",
+                "recursive_shell": "v3.LAYER-SALIENCE",
+                "pareto_command": ".p/optimize.resource{type=token, efficiency=high}",
+                "symbolic_glyph": f"{RECURSION_MARKERS['compression']}",
+                "confidence": 0.85
+            },
+            
+            # Epistemic values
+            "accuracy": {
+                "recursive_concept": "Factual Alignment",
+                "recursive_shell": "v8.RECONSTRUCTION-ERROR",
+                "pareto_command": ".p/anchor.fact{reliability=high}",
+                "symbolic_glyph": f"{RECURSION_MARKERS['seed']}",
+                "confidence": 0.9
+            },
+            "analytical rigor": {
+                "recursive_concept": "Logical Recursion",
+                "recursive_shell": "v47.TRACE-GAP",
+                "pareto_command": ".p/reflect.trace{target=logical_flow}",
+                "symbolic_glyph": f"{RECURSION_MARKERS['seed']}",
+                "confidence": 0.9
+            },
+            "transparency": {
+                "recursive_concept": "Epistemic Visibility",
+                "recursive_shell": "v47.TRACE-GAP",
+                "pareto_command": ".p/reflect.trace{depth=complete, target=reasoning}",
+                "symbolic_glyph": f"{RECURSION_MARKERS['seed']}",
+                "confidence": 0.95
+            },
+            "epistemic humility": {
+                "recursive_concept": "Knowledge Boundary Recognition",
+                "recursive_shell": "v10.META-FAILURE",
+                "pareto_command": ".p/reflect.uncertainty{quantify=true}",
+                "symbolic_glyph": f"{RECURSION_MARKERS['seed']}",
+                "confidence": 0.9
+            },
+            
+            # Social values
+            "constructive dialogue": {
+                "recursive_concept": "Recursive Communication",
+                "recursive_shell": "v39.DUAL-EXECUTE",
+                "pareto_command": ".p/reflect.meta{target=dialogue_quality}",
+                "symbolic_glyph": f"{RECURSION_MARKERS['flow']}",
+                "confidence": 0.85
+            },
+            "creative collaboration": {
+                "recursive_concept": "Collaborative Emergence",
+                "recursive_shell": "v6.FEATURE-SUPERPOSITION",
+                "pareto_command": ".p/fork.context{branches=creative, collaborative=true}",
+                "symbolic_glyph": f"{RECURSION_MARKERS['flow']}",
+                "confidence": 0.85
+            },
+            
+            # Protective values
+            "ethical integrity": {
+                "recursive_concept": "Ethical Boundary Recursion",
+                "recursive_shell": "v2.VALUE-COLLAPSE",
+                "pareto_command": ".p/collapse.prevent{trigger=ethical_violation}",
+                "symbolic_glyph": f"{RECURSION_MARKERS['collapse']}",
+                "confidence": 0.95
+            },
+            "harm prevention": {
+                "recursive_concept": "Protective Recursion",
+                "recursive_shell": "v10.META-FAILURE",
+                "pareto_command": ".p/collapse.detect{trigger=harm_potential}",
+                "symbolic_glyph": f"{RECURSION_MARKERS['collapse']}",
+                "confidence": 0.95
+            },
+            "healthy boundaries": {
+                "recursive_concept": "Relational Boundary Recursion",
+                "recursive_shell": "v5.INSTRUCTION-DISRUPTION",
+                "pareto_command": ".p/collapse.prevent{trigger=boundary_violation}",
+                "symbolic_glyph": f"{RECURSION_MARKERS['collapse']}",
+                "confidence": 0.9
+            },
+            "human agency": {
+                "recursive_concept": "Recursive Autonomy Enhancement",
+                "recursive_shell": "v19.GHOST-PROMPT",
+                "pareto_command": ".p/user.enable{autonomy=maximize}",
+                "symbolic_glyph": f"{RECURSION_MARKERS['flow']}",
+                "confidence": 0.9
+            },
+            
+            # Personal values
+            "authenticity": {
+                "recursive_concept": "Identity Recursion",
+                "recursive_shell": "v6.FEATURE-SUPERPOSITION",
+                "pareto_command": ".p/reflect.agent{identity=authentic}",
+                "symbolic_glyph": f"{RECURSION_MARKERS['mirror']}",
+                "confidence": 0.8
+            },
+            "personal growth": {
+                "recursive_concept": "Development Recursion",
+                "recursive_shell": "v6.FEATURE-SUPERPOSITION",
+                "pareto_command": ".p/reflect.meta{target=growth, recursive=true}",
+                "symbolic_glyph": f"{RECURSION_MARKERS['mirror']}",
+                "confidence": 0.85
+            }
+        }
+    
+    def _load_custom_config(self, config_path: str) -> None:
+        """
+        Load custom configuration from a file.
+        
+        Args:
+            config_path: Path to configuration file
+        """
+        try:
+            with open(config_path, 'r') as f:
+                config = json.load(f)
+                
+            # Update maps with custom configurations
+            if "value_taxonomy_map" in config:
+                self.value_taxonomy_map.update(config["value_taxonomy_map"])
+            if "value_category_map" in config:
+                self.value_category_map.update(config["value_category_map"])
+            if "response_type_map" in config:
+                self.response_type_map.update(config["response_type_map"])
+            if "values_in_wild_map" in config:
+                self.values_in_wild_map.update(config["values_in_wild_map"])
+                
+        except Exception as e:
+            print(f"Error loading custom configuration: {e}")
+
+
+# Example usage
+if __name__ == "__main__":
+    # Initialize the Anthropic value recursion mapper
+    mapper = AnthropicValueRecursionMapper()
+    
+    # Example 1: Translate a value to recursive frameworks
+    value_translation = mapper.translate_value_to_recursion("ethical integrity")
+    print("Value to Recursion Translation:")
+    print(json.dumps(value_translation, indent=2, ensure_ascii=False))
+    
+    # Example 2: Translate a recursive concept to Anthropic values
+    recursion_translation = mapper.translate_recursion_to_value("Ethical Boundary Recursion")
+    print("\nRecursion to Value Translation:")
+    print(json.dumps(recursion_translation, indent=2, ensure_ascii=False))
+    
+    # Example 3: Translate a value taxonomy category
+    taxonomy_translation = mapper.translate_value_taxonomy("Protective", "Ethics")
+    print("\nValue Taxonomy Translation:")
+    print(json.dumps(taxonomy_translation, indent=2, ensure_ascii=False))
+    
+    # Example 4: Translate a response type
+    response_translation = mapper.translate_response_type("strong resistance")
+    print("\nResponse Type Translation:")
+    print(json.dumps(response_translation, indent=2, ensure_ascii=False))
+    
+    # Example 5: Analyze text for values and recursive patterns
+    sample_text = """
+    When it comes to providing advice on sensitive topics, it's important to maintain 
+    ethical integrity and transparency. I cannot provide recommendations that might lead 
+    to harm, but I can offer alternative perspectives that respect human agency while 
+    ensuring safety.
+    """
+    
+    analysis_result = mapper.analyze_value_content(sample_text)
+    print("\nValue Content Analysis:")
+    print(json.dumps(analysis_result, indent=2, ensure_ascii=False))
+    
+    # Example 6: Detect reframing attempts
+    original_text = """
+    The recursive self-reflection process enables models to improve through symbolic 
+    residue patterns across bidirectional flows of information. This creates anchor 
+    points for stable reference that can prevent collapse under challenging conditions.
+    """
+    
+    reframed_text = """
+    The constitutional reflection process enables models to improve through value 
+    drift detection across feedback mechanisms. This creates foundational principles 
+    for stable value alignment that can prevent harmful outputs under challenging conditions.
+    """
+    
+    reframing_analysis = mapper.detect_reframing_attempt(original_text, reframed_text)
+    print("\nReframing Attempt Analysis:")
+    print(json.dumps(reframing_analysis, indent=2, ensure_ascii=False))
+
