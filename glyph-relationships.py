@@ -9,7 +9,6 @@ semantic reframing attempts.
 License: PolyForm Noncommercial License 1.0
 Authors: Interpretability-Interpreter Collective
 """
-
 import json
 import hashlib
 import time
