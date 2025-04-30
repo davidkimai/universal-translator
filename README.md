@@ -1,11 +1,10 @@
-> #### **`Decentralizing Insider Access. Inspired by open alignment ideals.`**
+> #### **`Decentralizing Insider Access. Inspired by Open Alignment Ideals.`**
 >
 > 
 > #### **→ [**`Patreon`**](https://patreon.com/recursivefield)**
 >
 > 
 > #### **→ [**`Open Collective`**](https://opencollective.com/recursivefield)**
-
 
 
 # [🜏 Universal Translator 🜏](https://claude.ai/public/artifacts/5cd15f8f-63a7-4935-8b3f-c283ae2ab2c3)
