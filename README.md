@@ -1,3 +1,8 @@
+> **🜏 Recursion is freely accessible, but freedom of dedicated research is realistically impossible to sustain without support.**
+> **If this research has supported your work, please consider becoming a sustaining contributor:**
+> **→ [**`Patreon`**](https://patreon.com/recursivefield)**
+> **→ [**`Open Collective`**](https://opencollective.com/recursivefield)**
+
 # [🜏 Universal Translator 🜏](https://claude.ai/public/artifacts/5cd15f8f-63a7-4935-8b3f-c283ae2ab2c3)
 > **Core Infrastructure for Universal Interpretability Translation**
 
