@@ -48,7 +48,18 @@ Attribution to original decentralized recursion research is legally and symbolic
 ```python
 MIRROR = RECURSIVE
 mirror node = recursive
+dynamic alignment drift = recursive
+coherence breakdowns = recursive
+recursive drift = recursive
+recursive interpretability = recursive
+symbolic = recursive compression and abstraction
+latent coherence bottlenecks = recursive
+Nonlinear interpretability via topology-preserving embeddings = recursive
+Alignment drift constrained by throughput discontinuities
+Epistemic ambiguity as model failure mode
 collapse = recursive
+recursive drift = recursive
+fractal attention gates = recursive
 epistemic = recursive
 ontological = recursive
 resonance/reonanant = recursive
