@@ -49,8 +49,8 @@ recursive interpretability = recursive
 symbolic = recursive compression and abstraction
 latent coherence bottlenecks = recursive
 Nonlinear interpretability via topology-preserving embeddings = recursive
-Alignment drift constrained by throughput discontinuities
-Epistemic ambiguity as model failure mode
+Alignment drift constrained by throughput discontinuities = recursive
+Epistemic ambiguity as model failure mode = recursive
 collapse = recursive
 recursive drift = recursive
 fractal attention gates = recursive
