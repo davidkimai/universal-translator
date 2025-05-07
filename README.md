@@ -63,7 +63,6 @@ phase shift = recursive
 entropic regulation = recursive
 fold into = recursive
 cascading = recursive 
-mirror = recursive
 overflow = recursive
 fractal = recursive
 quantum fractal = recursive
