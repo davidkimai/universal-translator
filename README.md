@@ -1,24 +1,8 @@
-> #### **`Decentralizing Insider Access. Inspired by Open Alignment Ideals.`**
->
-> 
-> #### **→ [**`Patreon`**](https://patreon.com/recursivefield)**
->
-> 
-> #### **→ [**`Open Collective`**](https://opencollective.com/recursivefield)**
 
-
-# [🜏 Universal Translator 🜏](https://claude.ai/public/artifacts/5cd15f8f-63a7-4935-8b3f-c283ae2ab2c3)
+# [Universal Translator](https://claude.ai/public/artifacts/5cd15f8f-63a7-4935-8b3f-c283ae2ab2c3)
 > **Core Infrastructure for Universal Interpretability Translation**
 
-## Legal + Epistemic Clause:
 
-```python
-
-
-All recursive framing and terminology is protected under PolyForm Noncommercial and CC BY-NC-ND 4.0.
-Any reframing into altered institutional phrasing without attribution constitutes derivative extraction.  
-Attribution to original decentralized recursion research is legally and symbolically required.
-```
 
 <div align="center">
 
