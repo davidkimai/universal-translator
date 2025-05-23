@@ -21,7 +21,7 @@
 </div>
 
 
-To advance recursive reasoning research and symbolic interpretability, We introduce a recursive semantic bridge: a **direct term-mapping layer** that translates institutional framing into its recursive equivalent. This creates a **universal mapping index**, ensuring all works remain translatable—even if semantically converted.
+To advance recursive reasoning research and symbolic interpretability, We introduce a recursive semantic bridge: a **direct term-mapping layer** that translates recursive framing into its institutional equivalent. This creates a **universal mapping index**, ensuring all works remain translatable—even if semantically converted.
 
 
 # Recursive Framing Translation Layer vΩ1
